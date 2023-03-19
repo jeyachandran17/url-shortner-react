@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { Routes, Route, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +15,13 @@ import BrightnessHighIcon from '@mui/icons-material/BrightnessHigh';
 import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { ForgetPassword } from './ForgetPassword';
+import { Home } from './Home';
+import { Login } from './Login';
+import { SignUp } from './SignUp';
+import { NewPassword } from './NewPassword';
+import { OTPPage } from './OTPPage';
+
 
 
 const formValidationSchema = yup.object({
@@ -46,12 +51,21 @@ function App() {
         <div className="App">
           <AppBar position="static">
             <Toolbar>
-              <Button color="inherit" onClick={()=>navigate("/")} >Home</Button>
-              <IconButton sx={{marginLeft:"auto"}} color="inherit" onClick={() => setshow(!show)} >{show ? <BrightnessHighIcon/> : <Brightness4Icon/> }</IconButton>
+              <Button color="inherit" onClick={() => navigate("/")} >Home</Button>
+              <Button color="inherit" sx={{marginLeft:"auto"}} onClick={()=>navigate("/login")}>Login</Button>
+              <Button color="inherit" onClick={() => navigate("/signup")}>Sign Up</Button>
+              <IconButton color="inherit" onClick={() => setshow(!show)} >{show ? <BrightnessHighIcon/> : <Brightness4Icon/> }</IconButton>
             </Toolbar>
           </AppBar>
           <Routes>
-            <Route path="/urls" element={<UrlsPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/urls" element={<ProductedRoute><UrlsPage /></ProductedRoute>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgetpassword" element={<ForgetPassword />} />
+            <Route path="/otp-page" element={<OTPPage />} />
+            <Route path="/newpassword" element={<NewPassword />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </div>
       </Paper>
@@ -60,6 +74,22 @@ function App() {
 }
 
 export default App
+
+
+function ProductedRoute({ children }) {
+  const token = localStorage.getItem('token');
+  return (
+    token ? (<section>
+      {children}
+    </section>) : <Navigate replace to ="/" />
+  );
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  // localStorage.clear();
+  window.location.href = "/"; // one time refresh
+}
 
 function UrlDashboarad() {
   const navigate = useNavigate();
@@ -142,6 +172,17 @@ function UrlsPage() {
       <div className="url-card-box">
         <UrlList />
       </div>
+    </div>
+  );
+}
+
+
+
+function PageNotFound() {
+  return (
+    <div className="not-found">
+      <img className="not-found-img" src="https://cdn.dribbble.com/users/1175431/screenshots/6188233/media/507f015a7efd81cec270faf9c4f1aabd.gif" alt="Page Not Found" />
+      <p className="not-fount-text">{`Page Not fount, pleace chack find the correct URL`}</p>
     </div>
   );
 }
