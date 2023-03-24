@@ -21,6 +21,7 @@ import { Login } from './Login';
 import { SignUp } from './SignUp';
 import { NewPassword } from './NewPassword';
 import { OTPPage } from './OTPPage';
+import { PageNotFound } from './PageNotFound';
 
 
 
@@ -102,12 +103,12 @@ function UrlDashboarad() {
     onSubmit : (newurl) => {
       console.log("Form values",values);
       addurl(newurl);
-    }
+      navigate("/urls")
+    }   
   });
-  const addurl = async (newurl) => {
-
-    
-   await fetch("http://localhost:4000/url", {
+  
+  const addurl = async (newurl) => {  
+   await fetch("https://url-shortner-nodejs-fawn.vercel.app/url", {
       method : "POST",
       body: JSON.stringify(newurl),
       headers: {
@@ -148,7 +149,7 @@ function UrlList() {
   useEffect(() => geturl(), [])
 
   const geturl = () => {
-    fetch("http://localhost:4000/url", {
+    fetch("https://url-shortner-nodejs-fawn.vercel.app/url", {
         method: "GET",
       })
         .then((data) => data.json())
@@ -172,17 +173,6 @@ function UrlsPage() {
       <div className="url-card-box">
         <UrlList />
       </div>
-    </div>
-  );
-}
-
-
-
-function PageNotFound() {
-  return (
-    <div className="not-found">
-      <img className="not-found-img" src="https://cdn.dribbble.com/users/1175431/screenshots/6188233/media/507f015a7efd81cec270faf9c4f1aabd.gif" alt="Page Not Found" />
-      <p className="not-fount-text">{`Page Not fount, pleace chack find the correct URL`}</p>
     </div>
   );
 }

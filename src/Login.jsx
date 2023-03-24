@@ -24,7 +24,7 @@ export function Login() {
     validationSchema : formValidationSchema,
     onSubmit :async (values) => {
       console.log("successfully login", values);
-      const data = await fetch("http://localhost:4000/user/login", {
+      const data = await fetch("https://credential-nodejs.vercel.app/user/login", {
        method: "POST",
        headers: {
          "Content-Type": "application/json"
